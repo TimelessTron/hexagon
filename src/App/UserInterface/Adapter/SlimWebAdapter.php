@@ -26,7 +26,11 @@ final class SlimWebAdapter
     public static function createApp(): App
     {
         $app = AppFactory::create();
+        $app->get('/', LuckyNumberController::class);
         $app->get('/lucky-number', LuckyNumberController::class);
+
+        // Debugging
+        $app->addErrorMiddleware(true, true, true);
 
         return $app;
     }

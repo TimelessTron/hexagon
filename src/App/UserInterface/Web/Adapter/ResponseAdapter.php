@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\UserInterface\Web\Adapter;
 
-use GuzzleHttp\Psr7\Response;
+use Slim\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Utils\PHPStan\Attribute\NoTestNeeded;
@@ -13,15 +13,14 @@ use Utils\PHPStan\Attribute\NoTestNeeded;
 final class ResponseAdapter
 {
     /**
-     * @param StreamInterface|resource|string|null $body
+     * @param StreamInterface|resource|string|null $content
      */
     public static function response(
-        mixed $body,
+        mixed $content,
         int $status = 200
     ): ResponseInterface {
-        return new Response(
-            status: $status,
-            body: $body,
-        );
+        $response = new Response($status);
+        $response->getBody()->write($content);
+        return $response->withHeader('Content-Type', 'application/json');
     }
 }
